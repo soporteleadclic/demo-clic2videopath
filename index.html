@@ -1,0 +1,269 @@
+<meta charset="UTF-8">
+<div id="c2vp">
+	<div id="c2vp_video">
+		<!-- WISTIA VIDEO -->
+		<script src="https://fast.wistia.com/embed/medias/cipi3361ai.jsonp" async></script>
+		<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+		<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+		<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+		<div class="wistia_embed wistia_async_cipi3361ai videoFoam=true" style="height:100%;position:relative;width:100%">
+		<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
+		<img src="https://fast.wistia.com/embed/medias/cipi3361ai/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
+		</div>
+		</div>
+		</div>
+		<div id="c2vp_overlay">
+			<div id="c2vp_overlayContent">
+			
+			</div>
+			<div id="c2vp_fullscreen" onfullscreenchange="alert()" onclick="goFullScreen()"><i class="material-icons">fullscreen</i></div>
+		</div>
+		</div>
+		<!-- /WISTIA VIDEO -->
+	</div>
+</div>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+#c2vp{
+	position:relative;
+	height:600px;
+	width:800px;
+}
+#c2vp.fullscreen{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000000;
+	width:100%;
+	height:100%;
+    background: black;
+	display:flex;
+	align-items: center;
+    justify-content: center;
+}	
+#c2vp_overlay{
+    background: transparent;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 0px solid blue;
+    box-sizing: border-box;
+	pointer-events:none;
+	display:flex;
+	align-items: center;
+    justify-content: center;
+}
+#c2vp_overlayContent{
+	background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bold;
+	position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10%;
+    box-sizing: border-box;
+	pointer-events:none;
+	opacity:0;
+	height:100%;
+	width:100%;
+}
+#c2vp_overlayContent.hide{
+	opacity:0;
+	pointer-events:none;
+	transition:opacity 0.5s ease;
+}
+#c2vp_overlayContent.show{
+	opacity:1;
+	pointer-events:all;
+	transition:opacity 0.5s ease;
+}
+.c2vp_title{
+	font-size: 30px;
+	margin-bottom: 30px;
+}
+.c2vp_input{
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.c2vp_option, .c2vp_continue{
+	cursor:pointer;
+}
+.c2vp_option::before {
+    content: '';
+    border: 2px solid white;
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+	margin-top:-5px;
+	transition:background 0.2s ease;
+}
+.c2vp_option:hover::before {
+	background:white;
+}
+.c2vp_label {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.c2vp_inputText {
+    border: 0px;
+    border-bottom: 2px solid white;
+    background: transparent;
+    color: white;
+    padding: 5px 10px;
+    font-size: 20px;
+    width: 200px;
+}
+.c2vp_continue {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    border: 2px solid white;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 10px 20px 10px 20px;
+}
+.c2vp_continue:hover {
+	transition:background 0.2s ease;
+    background:white;
+	color:black;
+}
+#c2vp_fullscreen{
+	pointer-events:all;
+    position: absolute;
+    top: 0;
+	left:0;
+    color: white;
+    cursor: pointer;
+	transition:opacity 0.2s ease;
+	opacity:0.5;
+}
+#c2vp_fullscreen:hover{
+	opacity:1;
+}
+#c2vp_fullscreen i{
+	font-size:40px;
+}
+</style>
+
+<!-- TIME PROCESSOR -->
+<script>
+window._wq = window._wq || [];
+videoElement = null;
+
+_wq.push({ id: "cipi3361ai", onReady: function(video) {
+  videoElement = video
+  video.bind('secondchange', function(s) {
+	if(s==20){
+		document.getElementById('c2vp_overlayContent').innerHTML = 
+		`
+			<div class="c2vp_title">¿Tienes un bar?</div>
+			<div class="c2vp_input c2vp_option" onclick="response1('Sí')">Sí</div>
+			<div class="c2vp_input c2vp_option" onclick="response1('No')">No</div>
+			<div class="c2vp_input c2vp_option" onclick="response1('Abriré un bar pronto')">Abriré un bar pronto</div>
+		`
+		showOverlay()
+	}
+	if(s==60){
+		document.getElementById('c2vp_overlayContent').innerHTML = 
+		`
+			<div class="c2vp_title">¿En qué ciudad está ubicado tu bar?</div>
+			<div class="c2vp_label">Código postal</div>
+			<input type="number" class="c2vp_inupt c2vp_inputText" id="inputPostalCode">
+			<div class="c2vp_continue" onclick="response2()">Continuar ></div>
+		`
+		showOverlay()
+	}
+	if(s==80){
+		document.getElementById('c2vp_overlayContent').innerHTML = 
+		`
+			<div class="c2vp_title">Estas han sido tus respuestas:</div>
+			<div class="c2vp_input">Tienes un bar: ${userResponses.bar}</div>
+			<div class="c2vp_input">Código postal: ${userResponses.postalCode}</div>
+			<div class="c2vp_continue" onclick="hideOverlay(180)">Finalizar ></div>
+		`
+		showOverlay()
+	}
+  });
+}});
+
+</script>
+
+<!-- RESPONSES -->
+<script>
+userResponses = {}
+function response1(data){
+	userResponses.bar = data
+	hideOverlay(50)
+}
+function response2(){
+	userResponses.postalCode = document.getElementById('inputPostalCode').value
+	hideOverlay(75)
+}
+</script>
+
+<!-- OVERLAY ACTIONS -->
+<script>
+
+function showOverlay(){
+	document.getElementById('c2vp_overlayContent').className = 'show'
+	videoElement.pause()
+}
+function hideOverlay(time){
+	document.getElementById('c2vp_overlayContent').className = 'hide'
+	if(time) videoElement.time(time)
+	videoElement.play()
+}
+
+</script>
+
+<!-- FULLSCREEN MODE -->
+<script>
+c2vp_isFullscreen = false
+
+function goFullScreen() {
+  console.log('fullscreen')
+	if(!c2vp_isFullscreen){
+		enterFullscreen()
+	}else{
+		exitFullscreen()
+	}
+}
+
+function enterFullscreen(){
+	document.getElementById('c2vp').className = 'fullscreen'
+	var isPortrait = window.innerHeight > window.innerWidth
+	console.log('isPortrait', isPortrait)
+	console.log('windowWidth', window.innerWidth)
+	console.log('windowHeight', window.innerHeight)
+	if(!isPortrait){
+		document.getElementById('c2vp_video').style.height = 'auto'
+		var width = window.innerHeight*videoElement.aspect()
+		document.getElementById('c2vp_video').style.width = width+'px'
+	}else{
+		document.getElementById('c2vp_video').style.width = '100%'
+		var height = window.innerWidth/videoElement.aspect()
+		document.getElementById('c2vp_video').style.height = height+'px'
+	}
+	c2vp_isFullscreen = true;
+}
+
+function exitFullscreen(){
+	document.getElementById('c2vp').className = ''
+	document.getElementById('c2vp_video').style.width = 'initial'
+	document.getElementById('c2vp_video').style.height = 'initial'
+	c2vp_isFullscreen = false;
+}
+
+window.onresize = function(){
+	if(c2vp_isFullscreen) enterFullscreen()
+}
+</script>
