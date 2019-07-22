@@ -1,51 +1,15 @@
-<meta charset="UTF-8">
 
-<div style="font-family:verdana; font-size:40px; font-weight:bold;">Ejemplo de vídeo interactivo con Wistia: Clic2yaPensaremosUnNombre</div><br/>
-
-<div id="c2vp">
-	<div id="c2vp_video">
-		<!-- WISTIA VIDEO -->
-		<script src="https://fast.wistia.com/embed/medias/cipi3361ai.jsonp" async></script>
-		<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-		<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-		<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-		<div class="wistia_embed wistia_async_cipi3361ai videoFoam=true" style="height:100%;position:relative;width:100%">
-		<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
-		<img src="https://fast.wistia.com/embed/medias/cipi3361ai/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
-		</div>
-		</div>
-		</div>
-		<div id="c2vp_overlay">
-			<div id="c2vp_overlayContent">
-			
-			</div>
-			<div id="c2vp_fullscreen" onfullscreenchange="alert()" onclick="goFullScreen()"><i class="material-icons">fullscreen</i></div>
-		</div>
-		</div>
-		<!-- /WISTIA VIDEO -->
-	</div>
+<!-- WISTIA VIDEO -->
+<script src="https://fast.wistia.com/embed/medias/cipi3361ai.jsonp" async></script>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+<div class="wistia_embed wistia_async_cipi3361ai" style="height:360px;position:relative;width:640px">
+<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
+<img src="https://fast.wistia.com/embed/medias/cipi3361ai/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
 </div>
-
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</div>
+<!-- /WISTIA VIDEO -->
 
 <style>
-#c2vp{
-	position:relative;
-	height:600px;
-	width:800px;
-}
-#c2vp.fullscreen{
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10000000;
-	width:100%;
-	height:100%;
-    background: black;
-	display:flex;
-	align-items: center;
-    justify-content: center;
-}	
 #c2vp_overlay{
     background: transparent;
     position: absolute;
@@ -139,22 +103,6 @@
     background:white;
 	color:black;
 }
-#c2vp_fullscreen{
-	pointer-events:all;
-    position: absolute;
-    top: 0;
-	left:0;
-    color: white;
-    cursor: pointer;
-	transition:opacity 0.2s ease;
-	opacity:0.5;
-}
-#c2vp_fullscreen:hover{
-	opacity:1;
-}
-#c2vp_fullscreen i{
-	font-size:40px;
-}
 </style>
 
 <!-- TIME PROCESSOR -->
@@ -164,6 +112,8 @@ videoElement = null;
 
 _wq.push({ id: "cipi3361ai", onReady: function(video) {
   videoElement = video
+  injectOverlay(video)
+  
   video.bind('secondchange', function(s) {
 	if(s==20){
 		document.getElementById('c2vp_overlayContent').innerHTML = 
@@ -219,54 +169,24 @@ function response2(){
 function showOverlay(){
 	document.getElementById('c2vp_overlayContent').className = 'show'
 	videoElement.pause()
+	if(!!navigator.platform && /iPhone/.test(navigator.platform)) document.getElementsByTagName('video')[0].webkitExitFullScreen();
 }
+
 function hideOverlay(time){
 	document.getElementById('c2vp_overlayContent').className = 'hide'
 	if(time) videoElement.time(time)
 	videoElement.play()
 }
 
-</script>
-
-<!-- FULLSCREEN MODE -->
-<script>
-c2vp_isFullscreen = false
-
-function goFullScreen() {
-  console.log('fullscreen')
-	if(!c2vp_isFullscreen){
-		enterFullscreen()
-	}else{
-		exitFullscreen()
-	}
+function injectOverlay(video){
+	var c2vp_overlay = document.createElement('div')
+	
+	c2vp_overlay.id = 'c2vp_overlay'
+	c2vp_overlay.innerHTML = '<div id="c2vp_overlayContent"></div>'
+	
+	video.grid.top_inside.style.height = '100%'
+	video.grid.top_inside.style.pointerEvents = 'none'
+	video.grid.top_inside.appendChild(c2vp_overlay)
 }
 
-function enterFullscreen(){
-	document.getElementById('c2vp').className = 'fullscreen'
-	var isPortrait = window.innerHeight > window.innerWidth
-	console.log('isPortrait', isPortrait)
-	console.log('windowWidth', window.innerWidth)
-	console.log('windowHeight', window.innerHeight)
-	if(!isPortrait){
-		document.getElementById('c2vp_video').style.height = 'auto'
-		var width = window.innerHeight*videoElement.aspect()
-		document.getElementById('c2vp_video').style.width = width+'px'
-	}else{
-		document.getElementById('c2vp_video').style.width = '100%'
-		var height = window.innerWidth/videoElement.aspect()
-		document.getElementById('c2vp_video').style.height = height+'px'
-	}
-	c2vp_isFullscreen = true;
-}
-
-function exitFullscreen(){
-	document.getElementById('c2vp').className = ''
-	document.getElementById('c2vp_video').style.width = 'initial'
-	document.getElementById('c2vp_video').style.height = 'initial'
-	c2vp_isFullscreen = false;
-}
-
-window.onresize = function(){
-	if(c2vp_isFullscreen) enterFullscreen()
-}
 </script>
