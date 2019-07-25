@@ -34,7 +34,7 @@
 		justify-content: center;
 		flex-direction: column;
 		padding: 10%;
-		box-sizing: border-box;
+		box-sizing: border-box!important;
 		pointer-events:none;
 		opacity:0;
 		height:100%;
@@ -111,7 +111,10 @@
 	videoElement = null
 	initLoop = null
 
-	_wq.push({ id: "cipi3361ai", onReady: function(video) {
+	_wq.push({id: "cipi3361ai", 
+	options: {
+		fakeFullscreen:true
+	},onReady: function(video) {
 		videoElement = video
 		injectOverlay(video)
   
@@ -172,8 +175,6 @@
 	function showOverlay(content){
 		document.getElementById('c2vp_overlayContent').innerHTML = content
 		document.getElementById('c2vp_overlayContent').className = 'show'
-		//If is iPhone exit fullscren mode because native browser does not support HTML elements overlay
-		if(!!navigator.platform && /iPhone/.test(navigator.platform)) document.getElementsByTagName('video')[0].webkitExitFullScreen()
 	}
 
 	function hideOverlay(time){
