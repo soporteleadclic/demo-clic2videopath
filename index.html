@@ -117,7 +117,9 @@
 	},onReady: function(video) {
 		videoElement = video
 		injectOverlay(video)
-  
+  		
+		video.time(15)
+		
 		video.bind('secondchange', function(s) {
 			if(s==20){
 				var content = `
